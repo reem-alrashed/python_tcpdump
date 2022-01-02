@@ -4,14 +4,14 @@ import sys
 import re
 
 def handle_IPv4(srcIP, dstIP):
-    print "IPv4: %s > %s" % (srcIP, dstIP)
+    print("IPv4: %s > %s" ,srcIP, dstIP) 
     
 def handle_IPv6(srcIP, dstIP):
-    print "IPv6: %s > %s" % (srcIP, dstIP)
+    print("IPv6: %s > %s", srcIP, dstIP)
 
 def main():
-    print "cheapIDS starting"
-    print """feed me "tcpdump -nn" (via pipe)"""
+    print("Application starting!!")
+    print(""""tcpdump -nn" (via pipe)""")
     
     reTimestamp = r"""\d{2}:\d{2}:\d{0,3}\.\d{0,6} #timestamp"""
     reIPv4 = r"""(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"""
@@ -23,10 +23,10 @@ def main():
         IP #ipv4
         \ 
         ("""+reIPv4+""") #scrIP 
-        (?:\.\d{0,5})? #port
+        (?:\.\d{0,5})? #srcPort
         \ > \  
         ("""+reIPv4+""") #dstIP 
-        (?:\.\d{0,5})? #port
+        (?:\.\d{0,5})? #dstPort
         : .*
         $""", re.X)
         
@@ -79,15 +79,13 @@ def main():
             dstIP = matchIPv6.group(2)
             handle_IPv6(srcIP, dstIP)
         elif matchARP:
-            #print "ARP request (ignored): %s" % matchARP.group(0)
             pass
         else:
             matchIGNORE = re.match(reTcpdumpIGNORE, x)
             if matchIGNORE:
-                #print "ignore: %s" % matchIGNORE.group()
                 pass
             else:
-                print "Unmatched input: %s" % x
+                print("Unmatched input: %s", x)
 
 
 main()
